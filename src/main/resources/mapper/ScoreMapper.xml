@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shape.dao.ScoreDao">
+
+    <resultMap id="score" type="com.shape.entity.CustomScore">
+        <id property="id" column="id"></id>
+        <result property="studentId" column="student_id"></result>
+        <result property="studentName" column="name"></result>
+        <result property="chinese" column="chinese"></result>
+        <result property="math" column="math"></result>
+        <result property="english" column="english"></result>
+        <result property="music" column="music"></result>
+        <result property="gym" column="gym"></result>
+    </resultMap>
+
+    <insert id="insertScore" parameterType="com.shape.entity.Score" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO score
+        (student_id,chinese,math,english,music,gym) VALUES
+            ( #{studentId},#{chinese},#{math},#{english},#{music},#{gym})
+    </insert>
+
+    <select id="queryScore" resultMap="score" parameterType="com.shape.query.ScoreQuery">
+       select
+        s.id,
+	    s.student_id,
+	    stu.name,
+	    s.chinese,
+	    s.math,
+	    s.english,
+	    s.music,
+	    s.gym
+        from score s LEFT JOIN student stu on s.student_id = stu.id
+        <where>
+            <if test="studentId != null">
+                s.student_id like CONCAT('%',#{studentId},'%' )
+            </if>
+            <if test="studentName != null">
+                AND stu.name like CONCAT('%',#{studentName},'%' )
+            </if>
+            <if test="classId != null">
+                AND stu.class_id=#{classId}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

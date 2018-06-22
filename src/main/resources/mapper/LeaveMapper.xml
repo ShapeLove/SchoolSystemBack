@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shape.dao.LeaveDao">
+
+    <resultMap id="leave" type="com.shape.entity.Leave">
+        <id property="id" column="id"></id>
+        <result property="teacherId" column="teacher_id"></result>
+        <result property="leaveDate" column="leave_date" jdbcType="DATE" javaType="java.util.Date"></result>
+        <result property="subject" column="subject"></result>
+        <result property="reason" column="reason"></result>
+        <result property="studentId" column="student_id"></result>
+    </resultMap>
+
+    <sql id="leave_colums">id,teacher_id,subject,leave_date,reason,student_id</sql>
+
+    <insert id="insertLeave" parameterType="com.shape.entity.Leave" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO leave
+        (teacher_id,subject,leave_date,reason,student_id) VALUES
+            ( #{teacherId},#{subject},#{leaveDate, jdbcType=DATE},#{reason},#{studentId})
+    </insert>
+
+    <select id="queryLeave" resultType="com.shape.entity.Leave" parameterType="com.shape.query.LeaveQuery">
+        SELECT <include refid="leave_colums"></include>
+        FROM leave
+        <where>
+            <if test="studentId != null">
+                student_id =#{studentId}
+            </if>
+            <if test="teacherId != null">
+                AND teacher_id=#{teacherId}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

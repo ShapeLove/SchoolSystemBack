@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shape.dao.CourceTableDao">
+
+
+    <sql id="courcetable_colums">id,jie,week,content,class_id</sql>
+
+    <insert id="insertCourceTable" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cource_table
+        (jie,week,content,class_id) VALUES
+            ( #{jie},#{week},#{content},#{classId})
+    </insert>
+
+    <select id="queryCourceTable" resultType="com.shape.entity.CourceTable" parameterType="com.shape.query.CourceTableQuery">
+        SELECT <include refid="courcetable_colums"></include>
+        FROM cource_table
+        <where>
+            <if test="classId != null">
+                class_id =#{classId}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

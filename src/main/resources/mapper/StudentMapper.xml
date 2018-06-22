@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shape.dao.StudentDao">
+
+    <resultMap id="student" type="com.shape.entity.Student">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="sex" column="sex"></result>
+        <result property="birthday" column="birthday" jdbcType="DATE" javaType="java.util.Date"></result>
+        <result property="intake" column="intake" jdbcType="DATE" javaType="java.util.Date"></result>
+        <result property="phone" column="phone"></result>
+        <result property="address" column="address"></result>
+        <result property="classId" column="class_id"></result>
+    </resultMap>
+
+    <sql id="student_colums">id,name,sex,birthday,intake,phone,address,class_id</sql>
+
+    <insert id="insertStudent" parameterType="com.shape.entity.Student">
+        INSERT INTO student VALUES
+            ( #{id},#{name},#{sex},#{birthday, jdbcType=DATE},#{intake, jdbcType=DATE},#{phone},#{address},#{classId})
+    </insert>
+
+    <select id="queryStudent" resultMap="student" parameterType="com.shape.query.StudentQuery">
+        SELECT <include refid="student_colums"></include>
+        FROM student
+        <where>
+          <if test="studentId != null">
+              id like CONCAT('%',#{studentId},'%' )
+          </if>
+          <if test="studentName != null">
+              AND name like CONCAT('%',#{studentName},'%')
+          </if>
+          <if test="classId != null">
+              AND class_id=#{classId}
+          </if>
+        </where>
+    </select>
+
+
+</mapper>

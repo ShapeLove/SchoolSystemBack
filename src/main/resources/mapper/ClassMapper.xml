@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shape.dao.ClassDao">
+
+
+    <sql id="class_colums">id,class_name,master_id</sql>
+
+    <insert id="insertClass" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO class
+        (class_name,master_id) VALUES
+            ( #{classId},#{masterId})
+    </insert>
+
+    <select id="queryClass" parameterType="com.shape.query.ClassQuery" resultType="com.shape.entity.Class">
+        SELECT <include refid="class_colums"></include>
+        FROM class
+        <where>
+            <if test="masterId != null">
+                master_id = #{masterId}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateClass">
+        UPDATE class
+        <set>
+            <if test="masterId != null">
+                master_id=#{masterId}
+            </if>
+            <if test="className != null">class_name=#{className}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+</mapper>

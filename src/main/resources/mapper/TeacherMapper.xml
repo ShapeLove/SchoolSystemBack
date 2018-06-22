@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shape.dao.TeacherDao">
+
+    <sql id="teacher_colums">id,name,sex,level,age,phone,email,address</sql>
+
+    <insert id="insertTeacher">
+        INSERT INTO teacher VALUES
+            ( #{id},#{name},#{sex},#{level},#{age},#{phone},#{email},#{address})
+    </insert>
+
+    <select id="queryTeacher" resultType="com.shape.entity.Teacher" parameterType="com.shape.query.TeacherQuery">
+        SELECT <include refid="teacher_colums"></include>
+        FROM teacher
+        <where>
+            <if test="teacherId != null">
+                id like CONCAT('%',#{teacherId},'%' )
+            </if>
+            <if test="teacherName != null">
+               AND name like CONCAT('%',#{teacherName},'%' )
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

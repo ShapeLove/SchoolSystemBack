@@ -1,0 +1,17 @@
+spring:
+  datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://123.206.28.158:3306/school?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      username: root
+      password: s137088
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
+  aop:
+    proxy-target-class: true
+mybatis:
+   configuration:
+     map-underscore-to-camel-case: true
+   mapper-locations: classpath:mapper/*.xml
+logging:
+  path: /var/log/tomcat

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shape.dao.BbsDao">
+
+    <resultMap id="bbs" type="com.shape.entity.Bbs">
+        <id property="id" column="id"></id>
+        <result property="studentId" column="student_id"></result>
+        <result property="bbsDate" column="bbs_date" jdbcType="DATE" javaType="java.util.Date"></result>
+        <result property="content" column="content"></result>
+        <result property="teacherRevert" column="teacher_revert"></result>
+    </resultMap>
+
+    <sql id="bbs_colums">id,student_id,teacher_id,bbs_date,content,teacher_revert</sql>
+
+    <insert id="insertBbs" parameterType="com.shape.entity.Bbs" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO bbs
+        (student_id,teacher_id,bbs_date,content) VALUES
+            ( #{studentId},#{teacherId},#{bbsDate, jdbcType=DATE},#{content})
+    </insert>
+
+    <select id="queryBbs" resultType="com.shape.entity.Bbs" parameterType="com.shape.query.BbsQuery">
+        SELECT <include refid="bbs_colums"></include>
+        FROM bbs
+        <where>
+            <if test="studentId != null">
+                student_id =#{studentId}
+            </if>
+            <if test="teacherId != null">
+                AND teacher_id =#{teacherId}
+            </if>
+        </where>
+    </select>
+    <update id="updateBbs">
+        update bbs
+        <set>
+            <if test="teacherRevert != null">
+                teacher_revert=#{teacherRevert}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+
+</mapper>
