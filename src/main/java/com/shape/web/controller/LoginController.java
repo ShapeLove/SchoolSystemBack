@@ -1,8 +1,10 @@
 package com.shape.web.controller;
 
 import com.shape.query.UserQuery;
+import com.shape.web.dto.CustomUser;
 import com.shape.web.dto.JsonResult;
 import com.shape.web.service.UserService;
+import com.shape.web.util.WebContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,5 +28,15 @@ public class LoginController {
     @RequestMapping(value = "/loginOut", method = RequestMethod.POST)
     public JsonResult loginOut(HttpServletRequest request) {
         return userService.loginOut(request);
+    }
+
+    @RequestMapping(value = "/loginInfo", method = RequestMethod.POST)
+    public JsonResult loginInfo() {
+        JsonResult jsonResult = JsonResult.falseResult();
+        CustomUser customUser = WebContext.getUserFromSession();
+        if (customUser != null) {
+            jsonResult = JsonResult.successResult();
+        }
+        return jsonResult;
     }
 }

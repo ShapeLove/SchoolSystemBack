@@ -23,7 +23,14 @@ public class BbsController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public JsonResult add(@RequestBody Bbs bbs) {
-        return bbsService.addBbs(bbs);
+        JsonResult jsonResult = JsonResult.falseResult();
+        CustomUser customUser = WebContext.getUserFromSession();
+        if (!customUser.getRole().equals("student")) {
+            jsonResult.setMessage("只有学生家长才能发布留言");
+        }else {
+            jsonResult = bbsService.addBbs(bbs);
+        }
+        return jsonResult;
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)

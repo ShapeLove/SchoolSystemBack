@@ -26,6 +26,7 @@ public class ScoreController {
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public JsonResult add(@RequestBody Score score) {
+
         return scoreService.add(score);
     }
 }

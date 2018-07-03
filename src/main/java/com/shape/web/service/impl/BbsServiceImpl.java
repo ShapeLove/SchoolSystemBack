@@ -1,13 +1,17 @@
 package com.shape.web.service.impl;
 
 import com.shape.dao.BbsDao;
+import com.shape.dao.TeacherDao;
 import com.shape.entity.Bbs;
+import com.shape.entity.Teacher;
 import com.shape.query.BbsQuery;
+import com.shape.query.TeacherQuery;
 import com.shape.web.dto.JsonResult;
 import com.shape.web.service.BbsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -18,12 +22,23 @@ public class BbsServiceImpl implements BbsService {
     @Autowired
     private BbsDao bbsDao;
 
+    @Autowired
+    private TeacherDao teacherDao;
+
     @Override
     public JsonResult addBbs(Bbs bbs) {
         JsonResult jsonResult = JsonResult.falseResult();
         try {
-            bbsDao.insertBbs(bbs);
+            TeacherQuery teacherQuery = new TeacherQuery();
+            teacherQuery.setTeacherId(bbs.getTeacherId());
+            List<Teacher> teacherList = teacherDao.queryTeacher(teacherQuery);
+            if (CollectionUtils.isEmpty(teacherList)) {
+                jsonResult.setMessage("不存在此教师信息");
+            }else {
+                bbsDao.insertBbs(bbs);
+            }
         }catch (Exception e) {
+            log.error("error: {}", e);
             jsonResult.setMessage("系统异常");
         }
         return jsonResult;

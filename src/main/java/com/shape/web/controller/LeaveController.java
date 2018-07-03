@@ -23,9 +23,15 @@ public class LeaveController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public JsonResult add(@RequestBody Leave leave) {
+        JsonResult jsonResult =JsonResult.falseResult();
         CustomUser customUser = WebContext.getUserFromSession();
-        leave.setTeacherId(customUser.getUserName());
-        return leaveService.addLeave(leave);
+        if(customUser.getRole().equals("master") || customUser.getRole().equals("teacher")) {
+            leave.setTeacherId(customUser.getUserName());
+            jsonResult = leaveService.addLeave(leave);
+        }else {
+            jsonResult.setMessage("只有教师才能添加缺勤记录");
+        }
+        return jsonResult;
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)

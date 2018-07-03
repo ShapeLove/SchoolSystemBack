@@ -4,9 +4,11 @@ import com.shape.entity.Class;
 import com.shape.entity.ClassTeacher;
 import com.shape.entity.Teacher;
 import com.shape.query.TeacherQuery;
+import com.shape.web.dto.CustomUser;
 import com.shape.web.dto.JsonResult;
 import com.shape.web.dto.PageResult;
 import com.shape.web.service.TeacherService;
+import com.shape.web.util.WebContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +24,14 @@ public class TeacherController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public JsonResult add(@RequestBody Teacher teacher) {
-        return teacherService.add(teacher);
+        JsonResult jsonResult = JsonResult.falseResult();
+        CustomUser customUser = WebContext.getUserFromSession();
+        if (!customUser.getRole().equals("manager")) {
+            jsonResult.setMessage("只有管理员才能添加教师");
+        }else {
+            jsonResult = teacherService.add(teacher);
+        }
+        return jsonResult;
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
