@@ -29,8 +29,13 @@ public class LoginFilter implements HandlerInterceptor {
         if (Objects.nonNull(user)) {
             return true;
         }else {
+            String origin = httpServletRequest.getHeader("Origin");
             httpServletResponse.setCharacterEncoding("utf-8");
             httpServletResponse.setContentType("text/html;charset=utf-8");
+            httpServletResponse.setHeader("Access-Control-Allow-Origin", origin);
+            httpServletResponse.setHeader("Access-Control-Allow-Methods", "*");
+            httpServletResponse.setHeader("Access-Control-Allow-Headers","Origin,Content-Type,Accept,token,X-Requested-With");
+            httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
             httpServletResponse.getWriter().write("notlogin");
             httpServletResponse.getWriter().flush();
             return false;
