@@ -2,7 +2,6 @@ package com.shape.dao;
 
 import com.shape.entity.User;
 import com.shape.query.UserQuery;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -24,6 +23,17 @@ public interface UserDao {
      */
     List<User> queryUser(UserQuery query);
 
+    /**
+     * 更新用户信息 这个主要是根据id更新
+     * @param user
+     * @return
+     */
     int updateUser(User user);
+
+    /**
+     * 同样是更新用户 这个主要是根据userName更新
+     * @param user
+     * @return
+     */
     int updateUserByUserName(User user);
 }

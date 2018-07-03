@@ -23,5 +23,10 @@ public interface ClassDao {
     List<Class> queryClass(ClassQuery query);
 
 
+    /**
+     * 修改班级信息
+     * @param cla 可以根据传入的id 定位数据库记录 并修改班级名称和班主任的教师id
+     * @return
+     */
     int updateClass(Class cla);
 }

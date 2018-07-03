@@ -10,8 +10,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 public class LoginFilter implements HandlerInterceptor {
+
+    /**
+     * preHandle表示在真正进入到Controller控制器方法前会调用 并且如果返回true才能够走正常的流程 否则页面报错
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @param o
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+        /**
+         * 1. 从session中获取key为user的CustomUser对象
+         * 2. 如果有的话就代表已经登录过系统直接返回true 继续到Controller层中处理 否则返回notlogin表示未登录
+         */
         CustomUser user = (CustomUser) httpServletRequest.getSession().getAttribute(Contant.SESSION_USER_KEY);
         if (Objects.nonNull(user)) {
             return true;

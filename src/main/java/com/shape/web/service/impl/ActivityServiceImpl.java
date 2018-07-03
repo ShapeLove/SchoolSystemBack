@@ -8,6 +8,7 @@ import com.shape.web.service.ActivityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class ActivityServiceImpl implements ActivityService {
     private ActivityDao activityDao;
 
     @Override
-    public JsonResult addActivity(Activity activity) {
+    public JsonResult addActivity(@RequestBody Activity activity) {
         JsonResult jsonResult = JsonResult.falseResult();
         try {
             activityDao.insertActivity(activity);

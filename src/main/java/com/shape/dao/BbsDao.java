@@ -22,5 +22,11 @@ public interface BbsDao {
      * @return
      */
     List<Bbs> queryBbs(BbsQuery query);
+
+    /**
+     * 回复留言
+     * @param bbs 只需要传id和teacherRevert即可
+     * @return
+     */
     int updateBbs(Bbs bbs);
 }

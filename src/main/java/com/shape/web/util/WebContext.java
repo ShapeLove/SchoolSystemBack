@@ -6,6 +6,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 存储Session上下文数据类
+ */
 public class WebContext {
 
     /**
@@ -18,6 +21,10 @@ public class WebContext {
        return request.getSession().getAttribute(key);
     }
 
+    /**
+     * 从当前Session会话中获取登录的用户信息
+     * @return
+     */
     public static CustomUser getUserFromSession() {
         HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
         return (CustomUser)request.getSession().getAttribute(Contant.SESSION_USER_KEY);

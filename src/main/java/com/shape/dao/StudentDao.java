@@ -9,6 +9,17 @@ import java.util.List;
  * 学生数据库接口
  */
 public interface StudentDao {
+    /**
+     * 插入学生信息
+     * @param student
+     * @return
+     */
     int insertStudent(Student student);
+
+    /**
+     * 查询学生信息
+     * @param query
+     * @return
+     */
     List<Student> queryStudent(StudentQuery query);
 }
