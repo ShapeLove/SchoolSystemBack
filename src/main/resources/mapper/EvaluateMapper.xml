@@ -24,12 +24,13 @@
         </where>
     </select>
 
-    <update id="updateEvaluate">
+    <update id="updateEvaluate" parameterType="com.shape.entity.Evaluate">
         update evaluate
         <set>
             <if test="teacherEvaluate != null">teacher_evaluate=#{teacherEvaluate}</if>
             <if test="studentEvaluate != null">student_evaluate=#{studentEvaluate}</if>
         </set>
+        where id = #{id}
     </update>
 
 
