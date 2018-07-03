@@ -1,5 +1,6 @@
 package com.shape.web.service.impl;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.shape.dao.ClassDao;
 import com.shape.dao.ScoreDao;
 import com.shape.dao.StudentDao;
@@ -17,6 +18,7 @@ import com.shape.web.service.ScoreService;
 import com.shape.web.util.WebContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -67,7 +69,11 @@ public class ScoreServiceImpl implements ScoreService {
             }
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            jsonResult.setMessage("系统异常");
+            if (e instanceof DuplicateKeyException) {
+                jsonResult.setMessage("该学生成绩已存在");
+            }else {
+                jsonResult.setMessage("系统异常");
+            }
             log.error("error:{}", e);
         }
         return jsonResult;

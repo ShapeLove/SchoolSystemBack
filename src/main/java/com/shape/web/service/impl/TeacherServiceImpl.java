@@ -11,6 +11,8 @@ import com.shape.entity.User;
 import com.shape.query.ClassQuery;
 import com.shape.query.ClassTeacherQuery;
 import com.shape.query.TeacherQuery;
+import com.shape.web.dto.CustomClass;
+import com.shape.web.dto.CustomUser;
 import com.shape.web.dto.JsonResult;
 import com.shape.web.dto.PageResult;
 import com.shape.web.service.TeacherService;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -103,13 +106,17 @@ public class TeacherServiceImpl implements TeacherService {
                     ClassTeacher classTeacher = new ClassTeacher();
                     classTeacher.setClassId(cla.getId());
                     classTeacher.setTeacherId(cla.getMasterId());
-                    classTeacherDao.insertClassTeacher(classTeacher);
+                    try {
+                        classTeacherDao.insertClassTeacher(classTeacher);
+                    }catch (Exception e) {
+
+                    }
                     User user = new User();
                     user.setRole("master");
                     user.setUserName(cla.getMasterId());
                     userDao.updateUserByUserName(user);
+                    jsonResult = JsonResult.successResult();
                 }
-                jsonResult = JsonResult.successResult();
             }
         }catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -136,6 +143,29 @@ public class TeacherServiceImpl implements TeacherService {
         }catch (Exception e) {
             jsonResult.setMessage("系统异常");
             log.error("error:{}", e);
+        }
+        return jsonResult;
+    }
+
+    @Override
+    public JsonResult<CustomClass> getClassInfo(int classId) {
+        JsonResult<CustomClass> jsonResult = JsonResult.falseResult();
+        try {
+            CustomClass customClass = new CustomClass();
+            customClass.setClassId(classId);
+            /**
+             * 先查询所有这个班的教师关联 然后根据所有教师关联的教师id查询教师信息放入列表中
+             */
+            List<Teacher> teacherList = teacherDao.queryTeacherByClassIdFromClassTeacher(classId);
+            customClass.setClassTeacher(teacherList);
+            List<Teacher> masterTeacher = teacherDao.queryTeacherByClassIdFromClass(classId);
+            if (!CollectionUtils.isEmpty(masterTeacher)) {
+                customClass.setMasterTeacher(masterTeacher.get(0));
+            }
+            jsonResult = JsonResult.successResult();
+            jsonResult.setData(customClass);
+        }catch (Exception e) {
+            jsonResult.setMessage("系统异常");
         }
         return jsonResult;
     }

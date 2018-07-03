@@ -4,6 +4,16 @@
 <mapper namespace="com.shape.dao.TeacherDao">
 
     <sql id="teacher_colums">id,name,sex,level,age,phone,email,address</sql>
+    <sql id="teacher_class_colums">
+          teacher.id as id,
+          teacher.name as name,
+          teacher.sex as sex,
+          teacher.level as level,
+          teacher.age as age,
+          teacher.phone as phone,
+          teacher.email as email,
+          teacher.address as address
+  </sql>
 
     <insert id="insertTeacher">
         INSERT INTO teacher VALUES
@@ -23,5 +33,14 @@
         </where>
     </select>
 
+    <select id="queryTeacherByClassIdFromClassTeacher" resultType="com.shape.entity.Teacher" parameterType="java.lang.Integer">
+        SELECT <include refid="teacher_class_colums"></include>
+        FROM teacher,class_teacher where teacher.id = class_teacher.teacher_id and class_teacher.class_id=#{classId}
+    </select>
+
+    <select id="queryTeacherByClassIdFromClass" resultType="com.shape.entity.Teacher" parameterType="java.lang.Integer">
+        SELECT <include refid="teacher_class_colums"></include>
+        FROM teacher,class where teacher.id=class.master_id and class.id=#{classId}
+    </select>
 
 </mapper>

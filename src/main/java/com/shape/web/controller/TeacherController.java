@@ -4,6 +4,7 @@ import com.shape.entity.Class;
 import com.shape.entity.ClassTeacher;
 import com.shape.entity.Teacher;
 import com.shape.query.TeacherQuery;
+import com.shape.web.dto.CustomClass;
 import com.shape.web.dto.CustomUser;
 import com.shape.web.dto.JsonResult;
 import com.shape.web.dto.PageResult;
@@ -41,11 +42,30 @@ public class TeacherController {
 
     @RequestMapping(value = "/setmaster", method = RequestMethod.POST)
     public JsonResult setMaster(@RequestBody Class cla) {
-        return teacherService.setMaster(cla);
+        JsonResult jsonResult = JsonResult.falseResult();
+        CustomUser customUser = WebContext.getUserFromSession();
+        if (customUser.getRole().equals("manager")) {
+            jsonResult = teacherService.setMaster(cla);
+        }else {
+            jsonResult.setMessage("只有管理员才能设置班主任");
+        }
+        return jsonResult;
     }
 
     @RequestMapping(value = "/setclass", method = RequestMethod.POST)
     public JsonResult setClass(@RequestBody ClassTeacher classTeacher) {
-        return teacherService.setTeacherToClass(classTeacher);
+        JsonResult jsonResult = JsonResult.falseResult();
+        CustomUser customUser = WebContext.getUserFromSession();
+        if (customUser.getRole().equals("manager")) {
+            jsonResult = teacherService.setTeacherToClass(classTeacher);
+        }else {
+            jsonResult.setMessage("只有管理员才能设置教师所属班级");
+        }
+        return jsonResult;
+    }
+
+    @RequestMapping(value = "/classInfo", method = RequestMethod.POST)
+    public JsonResult<CustomClass> classInfo (Integer classId) {
+        return teacherService.getClassInfo(classId);
     }
 }

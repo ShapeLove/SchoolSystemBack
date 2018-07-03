@@ -23,4 +23,18 @@ public interface TeacherDao {
      * @return
      */
     List<Teacher> queryTeacher(TeacherQuery query);
+
+    /**
+     * 根据classId查询出该班级所有教师 包括班主任 如果班主任教书的话
+     * @param classId
+     * @return
+     */
+    List<Teacher> queryTeacherByClassIdFromClassTeacher(int classId);
+
+    /**
+     * 根据classId查询出该班班主任信息
+     * @param classId
+     * @return
+     */
+    List<Teacher> queryTeacherByClassIdFromClass(int classId);
 }
