@@ -28,6 +28,7 @@ public class BbsController {
         if (!customUser.getRole().equals("student")) {
             jsonResult.setMessage("只有学生家长才能发布留言");
         }else {
+            bbs.setStudentId(customUser.getUserName());
             jsonResult = bbsService.addBbs(bbs);
         }
         return jsonResult;

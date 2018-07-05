@@ -36,6 +36,7 @@ public class BbsServiceImpl implements BbsService {
                 jsonResult.setMessage("不存在此教师信息");
             }else {
                 bbsDao.insertBbs(bbs);
+                jsonResult = JsonResult.successResult();
             }
         }catch (Exception e) {
             log.error("error: {}", e);
@@ -62,6 +63,7 @@ public class BbsServiceImpl implements BbsService {
         JsonResult jsonResult = JsonResult.falseResult();
         try {
             bbsDao.updateBbs(bbs);
+            jsonResult = JsonResult.successResult();
         }catch (Exception e) {
             jsonResult.setMessage("系統异常");
         }

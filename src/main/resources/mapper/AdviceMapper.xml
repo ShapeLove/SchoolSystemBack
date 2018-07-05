@@ -8,7 +8,7 @@
     <insert id="insertAdvice" parameterType="com.shape.entity.Advice" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO advice
         (advice_date,content) VALUES
-            ( #{activityDate, jdbcType=DATE},#{content})
+            ( #{adviceDate, jdbcType=DATE},#{content})
     </insert>
 
     <select id="queryAdvice" resultType="com.shape.entity.Advice">
