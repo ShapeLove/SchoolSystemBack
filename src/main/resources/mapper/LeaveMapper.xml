@@ -15,14 +15,14 @@
     <sql id="leave_colums">id,teacher_id,subject,leave_date,reason,student_id</sql>
 
     <insert id="insertLeave" parameterType="com.shape.entity.Leave" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO leave
+        INSERT INTO t_leave
         (teacher_id,subject,leave_date,reason,student_id) VALUES
             ( #{teacherId},#{subject},#{leaveDate, jdbcType=DATE},#{reason},#{studentId})
     </insert>
 
     <select id="queryLeave" resultType="com.shape.entity.Leave" parameterType="com.shape.query.LeaveQuery">
         SELECT <include refid="leave_colums"></include>
-        FROM leave
+        FROM t_leave
         <where>
             <if test="studentId != null">
                 student_id =#{studentId}

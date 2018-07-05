@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/homework")
 public class HomeworkController {
@@ -47,6 +49,25 @@ public class HomeworkController {
 
     @RequestMapping(value = "revert", method = RequestMethod.POST)
     public JsonResult revert(@RequestBody Homework homework) {
-        return homeworkService.revertHomework(homework);
+        JsonResult jsonResult = JsonResult.falseResult();
+        CustomUser customUser = WebContext.getUserFromSession();
+        if(customUser.getRole().equals("master") || customUser.getRole().equals("student")) {
+            jsonResult = homeworkService.revertHomework(homework);
+        }else {
+            jsonResult.setMessage("只有班主任或者学生家长能够回复");
+        }
+        return jsonResult;
+    }
+
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    public JsonResult delete(@RequestBody List<Integer> homeworkIdList) {
+        JsonResult jsonResult = JsonResult.falseResult();
+        CustomUser customUser = WebContext.getUserFromSession();
+        if (customUser.getRole().equals("master")) {
+            jsonResult = homeworkService.deleteHomework(homeworkIdList);
+        }else {
+            jsonResult.setMessage("只有班主任才能删除作业");
+        }
+        return jsonResult;
     }
 }

@@ -65,7 +65,7 @@ public class TeacherController {
     }
 
     @RequestMapping(value = "/classInfo", method = RequestMethod.POST)
-    public JsonResult<CustomClass> classInfo (Integer classId) {
-        return teacherService.getClassInfo(classId);
+    public JsonResult<CustomClass> classInfo (@RequestBody ClassTeacher classTeacher) {
+        return teacherService.getClassInfo(classTeacher.getClassId());
     }
 }

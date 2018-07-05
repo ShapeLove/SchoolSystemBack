@@ -47,6 +47,13 @@ public class BbsController {
 
     @RequestMapping(value = "/revert",method = RequestMethod.POST)
     public JsonResult revert(@RequestBody Bbs bbs) {
-        return bbsService.revertBbs(bbs);
+        JsonResult jsonResult = JsonResult.falseResult();
+        CustomUser customUser = WebContext.getUserFromSession();
+        if (customUser.getRole().equals("master") || customUser.getRole().equals("teacher")) {
+            jsonResult = bbsService.revertBbs(bbs);
+        }else {
+            jsonResult.setMessage("只有教师能够回复");
+        }
+        return jsonResult;
     }
 }

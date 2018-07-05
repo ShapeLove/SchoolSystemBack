@@ -11,4 +11,5 @@ public class ClassQuery {
      * 班主任教工号
      */
     private String masterId;
+
 }

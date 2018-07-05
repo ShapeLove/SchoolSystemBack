@@ -22,5 +22,13 @@
         </where>
     </select>
 
+    <select id="queryCourceTableByWeekJie" resultType="com.shape.entity.CourceTable" parameterType="com.shape.query.CourceTableQuery">
+        SELECT <include refid="courcetable_colums"></include>
+        FROM cource_table where jie=#{jie} and week=#{week} and class_id=#{classId}
+    </select>
+
+    <update id="updateCourceTable" parameterType="com.shape.entity.CourceTable">
+        update cource_table set content=#{content} where jie = #{jie} and week=#{week} and class_id=#{classId}
+    </update>
 
 </mapper>

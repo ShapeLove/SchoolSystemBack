@@ -104,4 +104,18 @@ public class HomeworkServiceImpl implements HomeworkService {
         }
         return jsonResult;
     }
+
+    @Override
+    public JsonResult deleteHomework(List<Integer> homeworkIds) {
+        JsonResult jsonResult = JsonResult.falseResult();
+        try {
+            homeworkDao.deleteHomework(homeworkIds);
+            jsonResult = JsonResult.successResult();
+        }catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            jsonResult.setMessage("系统异常");
+        }
+        return jsonResult;
+    }
+
 }

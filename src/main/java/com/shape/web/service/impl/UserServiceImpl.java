@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
                     customUser.setUserName(currentUser.getUserName());
                     customUser.setUserPassword(currentUser.getUserPassword());
                     customUser.setRole(currentUser.getRole());
-                    if (customUser.getRole().equals("teacher")) {
+                    if (customUser.getRole().equals("teacher") || customUser.getRole().equals("master")) {
                         ClassTeacherQuery classTeacherQuery = new ClassTeacherQuery();
                         classTeacherQuery.setTeacherId(customUser.getUserName());
                         List<ClassTeacher> classTeacherList = classTeacherDao.queryClassTeacher(classTeacherQuery);
@@ -69,11 +69,13 @@ public class UserServiceImpl implements UserService {
                             }
                             customUser.setTeachClassIdList(classId);
                         }
-                    }else if (customUser.getRole().equals("master")) {
+                    }
+                    if (customUser.getRole().equals("master")) {
                         ClassQuery classQuery = new ClassQuery();
                         List<Class> classList = classDao.queryClass(classQuery);
                         customUser.setMasterClassId(classList.get(0).getId());
-                    }else if (customUser.getRole().equals("student")) {
+                    }
+                    if (customUser.getRole().equals("student")) {
                         StudentQuery studentQuery = new StudentQuery();
                         studentQuery.setStudentId(customUser.getUserName());
                         List<Student> studentList = studentDao.queryStudent(studentQuery);

@@ -24,4 +24,6 @@ public interface HomeworkDao {
      * @return
      */
     int updateHomework(Homework homework);
+
+    int deleteHomework(List<Integer> homeworkIds);
 }

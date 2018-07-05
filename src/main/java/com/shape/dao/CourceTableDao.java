@@ -22,4 +22,8 @@ public interface CourceTableDao {
      * @return
      */
     List<CourceTable> queryCourceTable(CourceTableQuery query);
+
+    List<CourceTable> queryCourceTableByWeekJie(CourceTableQuery query);
+
+    int updateCourceTable(CourceTable courceTable);
 }

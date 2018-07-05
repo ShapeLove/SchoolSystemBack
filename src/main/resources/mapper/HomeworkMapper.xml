@@ -36,4 +36,11 @@
         where id=#{id}
     </update>
 
+    <delete id="deleteHomework" parameterType="java.lang.Integer">
+        delete from homework where id in
+        <foreach item="homeworkItem" collection="list" open="(" separator="," close=")">
+            #{homeworkItem}
+        </foreach>
+    </delete>
+
 </mapper>

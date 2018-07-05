@@ -48,7 +48,14 @@ public class EvaluateController {
 
     @RequestMapping(value = "/revert", method = RequestMethod.POST)
     public JsonResult revert(@RequestBody Evaluate evaluate) {
-        return evaluateService.revertEvaluate(evaluate);
+        JsonResult jsonResult = JsonResult.falseResult();
+        CustomUser customUser = WebContext.getUserFromSession();
+        if (customUser.getRole().equals("student")) {
+            jsonResult = evaluateService.revertEvaluate(evaluate);
+        }else {
+            jsonResult.setMessage("只有学生家长才能回复");
+        }
+        return jsonResult;
     }
 
 }

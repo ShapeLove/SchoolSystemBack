@@ -8,4 +8,6 @@ import lombok.Data;
 @Data
 public class CourceTableQuery {
     Integer classId;
+    Integer week;
+    Integer jie;
 }

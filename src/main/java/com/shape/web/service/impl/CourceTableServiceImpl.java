@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -30,7 +31,16 @@ public class CourceTableServiceImpl implements CourseTableService {
         JsonResult jsonResult = JsonResult.falseResult();
         try {
             for (CourceTable courceTable : courceTableList) {
-                courceTableDao.insertCourceTable(courceTable);
+                CourceTableQuery courceTableQuery = new CourceTableQuery();
+                courceTableQuery.setClassId(courceTable.getClassId());
+                courceTableQuery.setJie(courceTable.getJie());
+                courceTableQuery.setWeek(courceTable.getWeek());
+                List<CourceTable> courceTableLists = courceTableDao.queryCourceTableByWeekJie(courceTableQuery);
+                if (CollectionUtils.isEmpty(courceTableLists)) {
+                    courceTableDao.insertCourceTable(courceTable);
+                }else {
+                    courceTableDao.updateCourceTable(courceTable);
+                }
             }
             jsonResult = JsonResult.successResult();
 
